@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:destroy]
 
   def index
-    @tasks = Task.all
+    @tasks = Task.order(deadline: :asc).all
   end
 
   def new
@@ -11,6 +11,8 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+    puts task_params.inspect
+    puts @task.inspect
 
     if @task.save
       redirect_to tasks_url, notice: 'Task successfully created.'
@@ -31,6 +33,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:description)
+    params.require(:task).permit(:title, :deadline, :description)
   end
 end
